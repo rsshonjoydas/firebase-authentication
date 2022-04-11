@@ -6,3 +6,5 @@
 @tailwind utilities;
 
 @import url(./animatedLink.css);
+@import url(./SideBar.css);
+@import url(./TopNavigation.css);
