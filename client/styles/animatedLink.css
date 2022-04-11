@@ -1,0 +1,35 @@
+.link {
+  color: #a855e7;
+  font-size: 1.3rem;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.5em;
+  margin-left: -0.5em;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+.link:before,
+.link:after {
+  position: absolute;
+  content: '';
+  border-bottom: 3px solid #a855e7;
+  border-radius: 1em;
+  bottom: 0.3em;
+  transition: transform 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.link:before {
+  width: 1em;
+  transform-origin: left;
+}
+.link:after {
+  width: 82%;
+  left: 1em;
+  transform: translateX(110%);
+}
+.link:hover:before {
+  transform: scaleX(0.3);
+}
+.link:hover:after {
+  transform: translateX(0);
+}
