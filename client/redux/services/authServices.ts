@@ -1,14 +1,19 @@
 /* eslint-disable import/prefer-default-export */
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  browserSessionPersistence,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase';
-import { IRegister } from '../../interface/authTypes';
+import { ILogin, IRegister } from '../../interface/authTypes';
 
 export const register = async (user: IRegister) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, user.email, user.password);
-
-    // await sendEmailVerification(auth.currentUser);
 
     toast.success('Activate your email');
 
@@ -28,5 +33,23 @@ export const register = async (user: IRegister) => {
     //   toast.error('Password should be at least 6 character');
     // }
     return toast.error(error.message);
+  }
+};
+
+export const login = async (user: ILogin) => {
+  try {
+    const { email, password, remember } = user;
+
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+
+    const res = await signInWithEmailAndPassword(auth, email, password);
+
+    toast.success('Login Successfully!');
+
+    user.router?.push('./');
+
+    return res.user;
+  } catch (err: any) {
+    return toast.error(err.message);
   }
 };

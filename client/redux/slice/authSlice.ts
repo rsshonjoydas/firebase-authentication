@@ -1,18 +1,15 @@
 /* eslint-disable no-return-await */
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IAuth, IRegister } from '../../interface/authTypes';
-import { register } from '../services/authServices';
+import { AuthState, ILogin, IRegister } from '../../interface/authTypes';
+import { login, register } from '../services/authServices';
 
 export const authRegister = createAsyncThunk(
   'auth/register',
   async (user: IRegister) => await register(user)
 );
 
-export interface AuthState {
-  currentUser?: IAuth;
-  loading: boolean;
-}
+export const authLogin = createAsyncThunk('auth/login', async (user: ILogin) => await login(user));
 
 const initialState: AuthState = {
   currentUser: undefined,
