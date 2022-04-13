@@ -3,8 +3,11 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
   setPersistence,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
@@ -48,6 +51,24 @@ export const login = async (user: ILogin) => {
 
     user.router?.push('./');
 
+    return res.user;
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+};
+
+export const google = async () => {
+  try {
+    const res = await signInWithPopup(auth, new GoogleAuthProvider());
+    return res.user;
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+};
+
+export const facebook = async () => {
+  try {
+    const res = await signInWithPopup(auth, new FacebookAuthProvider());
     return res.user;
   } catch (err: any) {
     return toast.error(err.message);

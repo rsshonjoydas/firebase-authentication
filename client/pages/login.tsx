@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import * as Yup from 'yup';
+import LoginSocial from '../components/auth/LoginSocial';
 import Button from '../components/Button/Button';
 import FormikControl from '../components/Form/FormikControl';
 import TextError from '../components/Form/TextError';
@@ -116,6 +117,7 @@ const Login = () => {
                     Forgot password?
                   </a>
                 </div>
+                <LoginSocial />
                 {/* // ? Toggle Login & Sign Up button */}
                 <div className="flex justify-center items-center">
                   <Link href="/register">Dont have an account? Sign Up</Link>
