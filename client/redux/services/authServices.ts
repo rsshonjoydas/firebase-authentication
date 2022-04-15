@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -72,5 +73,17 @@ export const facebook = async () => {
     return res.user;
   } catch (err: any) {
     return toast.error(err.message);
+  }
+};
+
+export const forgotPassword = async (email: string) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return toast.success('Success! Check your email.');
+  } catch (err: any) {
+    if (err.code === 'auth/user-not-found') {
+      return toast.error('E-mail not found!');
+    }
+    return true;
   }
 };

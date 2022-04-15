@@ -113,7 +113,7 @@ const Login = () => {
                 {/* // ? Submit button & Forget password Field */}
                 <div className="flex justify-between items-center">
                   <Button type="submit">Login</Button>
-                  <a href="/" className="text-sm hover:underline ml-8">
+                  <a href="/forgot-password" className="text-sm hover:underline ml-8">
                     Forgot password?
                   </a>
                 </div>
