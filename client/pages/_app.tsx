@@ -1,10 +1,9 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Provider } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../components/Layout';
-import { store } from '../redux/store';
+import { wrapper } from '../redux/store';
 import '../styles/globals.css';
 
 toast.configure();
@@ -15,7 +14,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }
 
   return (
-    <Provider store={store}>
+    <>
+      {/* <Provider store={store}> */}
       <Head>
         <title>RS Shonjoy</title>
         <meta name="rsshonjoy" content="RS Shonjoy | Portfolio" />
@@ -24,8 +24,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Provider>
+      {/* </Provider> */}
+    </>
   );
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
