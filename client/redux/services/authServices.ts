@@ -9,6 +9,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
@@ -86,4 +87,13 @@ export const forgotPassword = async (email: string) => {
     }
     return true;
   }
+};
+
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+  return true;
 };

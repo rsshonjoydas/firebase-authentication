@@ -1,5 +1,7 @@
 import { BsFillLightningFill, BsGearFill, BsPlus } from 'react-icons/bs';
 import { FaFire, FaPoo, FaPowerOff } from 'react-icons/fa';
+import { useAppDispatch } from '../../redux/hooks';
+import { authLogout } from '../../redux/slice/authSlice';
 
 const SideBarIcon = ({ icon, text }: any) => (
   <div className="sidebar-icon group">
@@ -7,12 +9,17 @@ const SideBarIcon = ({ icon, text }: any) => (
     <span className="sidebar-tooltip group-hover:scale-100">{text}</span>
   </div>
 );
-const SideBarPowerIcon = ({ icon, text }: any) => (
-  <div className="sidebar-power-icon group">
-    {icon}
-    <span className="sidebar-tooltip group-hover:scale-100">{text}</span>
-  </div>
-);
+
+const SideBarPowerIcon = ({ icon, text }: any) => {
+  const dispatch = useAppDispatch();
+
+  return (
+    <div className="sidebar-power-icon group" onClick={() => dispatch(authLogout())}>
+      {icon}
+      <span className="sidebar-tooltip group-hover:scale-100">{text}</span>
+    </div>
+  );
+};
 
 const Divider = () => <hr className="sidebar-hr" />;
 

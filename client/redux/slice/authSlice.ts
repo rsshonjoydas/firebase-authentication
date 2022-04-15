@@ -2,7 +2,14 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AuthState, ILogin, IRegister } from '../../interface/authTypes';
-import { facebook, forgotPassword, google, login, register } from '../services/authServices';
+import {
+  facebook,
+  forgotPassword,
+  google,
+  login,
+  logOut,
+  register,
+} from '../services/authServices';
 
 export const authRegister = createAsyncThunk(
   'auth/register',
@@ -19,6 +26,8 @@ export const authForgotPassword = createAsyncThunk(
   'auth/forgot-password',
   async (email: string) => await forgotPassword(email)
 );
+
+export const authLogout = createAsyncThunk('auth/logout', async () => await logOut());
 
 const initialState: AuthState = {
   currentUser: undefined,
