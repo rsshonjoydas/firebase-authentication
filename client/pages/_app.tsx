@@ -15,7 +15,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      {/* <Provider store={store}> */}
       <Head>
         <title>RS Shonjoy</title>
         <meta name="rsshonjoy" content="RS Shonjoy | Portfolio" />
@@ -24,7 +23,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-      {/* </Provider> */}
     </>
   );
 };

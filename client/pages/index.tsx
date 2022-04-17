@@ -6,6 +6,7 @@ import SEO from '../components/SEO';
 import { auth } from '../firebase';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { addUser } from '../redux/slice/authSlice';
+import { fetchProfile } from '../redux/slice/profileSlice';
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,11 @@ const Home: NextPage = () => {
 
     return unsubscribe;
   }, [dispatch, router]);
+
+  useEffect(() => {
+    if (!currentUser?.uid) return;
+    dispatch(fetchProfile(currentUser.uid));
+  }, [currentUser, dispatch]);
 
   return (
     <>

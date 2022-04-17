@@ -1,5 +1,8 @@
 import * as FireAuth from 'firebase/auth';
 import { NextRouter } from 'next/router';
+import { ChangeEvent } from 'react';
+
+export type ChangeInput = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 export interface IParams {
   page: string;
@@ -18,8 +21,17 @@ export interface ILogin {
   router?: NextRouter;
 }
 
-interface IAuth extends FireAuth.User {}
+export interface IAuth extends FireAuth.User {}
 export interface AuthState {
   currentUser?: IAuth;
   loading: boolean;
+}
+
+export interface IProfile {
+  fullName: string;
+  emailContact: string;
+  phone: string;
+  website: string;
+  address: string;
+  about: string;
 }

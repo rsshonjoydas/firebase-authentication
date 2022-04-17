@@ -1,11 +1,17 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import authReducer from '../slice/authSlice';
+import profileReducer from '../slice/profileSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    profile: profileReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;
