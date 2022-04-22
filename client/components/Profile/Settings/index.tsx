@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import Account from './account';
 import ProfileForm from './ProfileForm';
 
 interface IProps {
@@ -11,6 +12,7 @@ const Settings: React.FC<IProps> = ({ setOnSetting }) => (
     {/* ProfileForm */}
     <ProfileForm />
     {/* Account */}
+    <Account />
 
     {/* Change Password */}
 
