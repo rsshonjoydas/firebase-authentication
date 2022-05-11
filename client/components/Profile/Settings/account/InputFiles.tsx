@@ -3,6 +3,8 @@
 import React, { ChangeEvent } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import useModal from '../../../../hooks/useModal';
+import Modal from '../../../Modal';
 
 interface IProps {
   multiple?: boolean;
@@ -11,6 +13,8 @@ interface IProps {
 }
 
 const InputFiles: React.FC<IProps> = ({ multiple, files, setFiles }) => {
+  const { modalOpen, close, open } = useModal();
+
   const checkImages = (fls: FileList) => {
     const newFiles: File[] = [];
 
@@ -68,6 +72,7 @@ const InputFiles: React.FC<IProps> = ({ multiple, files, setFiles }) => {
 
   return (
     <div className="w-full my-3">
+      {modalOpen && <Modal modalOpen={modalOpen} type="dropIn" handleClose={close} />}
       <div
         onDrop={drop}
         onDragOver={allowDrag}
@@ -116,7 +121,9 @@ const InputFiles: React.FC<IProps> = ({ multiple, files, setFiles }) => {
               />
             </label>
             <p className="pl-1">or</p>
-            <p className="pl-1 font-semibold text-red-500 cursor-pointer">My Storage</p>
+            <p className="pl-1 font-semibold text-red-500 cursor-pointer" onClick={open}>
+              My Storage
+            </p>
             <p className="pl-1">or drag and drop</p>
           </div>
           <p className="text-xs text-gray-500">PNG, JPG, GIF up to 1MB</p>
