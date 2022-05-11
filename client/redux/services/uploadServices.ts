@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-return-await */
 /* eslint-disable import/prefer-default-export */
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { getDownloadURL, listAll, ref, uploadBytesResumable } from 'firebase/storage';
 import { toast } from 'react-toastify';
 import { storage } from '../../firebase';
 
@@ -31,4 +32,20 @@ export const uploadFiles = async (folder: string, files: File[]) => {
 
   const urls = await Promise.all(urlPromises);
   return urls;
+};
+
+export const getFiles = async (folder: string, callback: (urls: string[]) => void) => {
+  const listRef = ref(storage, `${folder}`);
+
+  listAll(listRef)
+    .then(async (res) => {
+      const urlPromises = res.items.map(async (itemRef) => {
+        const path = itemRef.toString();
+        return await downloadFile(path);
+      });
+
+      const url = await Promise.all(urlPromises).then((urls) => callback(urls));
+      return url;
+    })
+    .catch((err) => toast.error(err.message));
 };

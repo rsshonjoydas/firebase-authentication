@@ -6,7 +6,7 @@ import { uploadFiles } from '../../../../redux/services/uploadServices';
 import InputFiles from './InputFiles';
 
 const Avatar = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<(File | string)[]>([]);
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useAppSelector((state) => state.auth);
@@ -14,9 +14,14 @@ const Avatar = () => {
   const handleChangeAvatar = async () => {
     if (!files.length || !currentUser) return;
     setLoading(true);
-    const res = await uploadFiles(`images/${currentUser.uid}`, files);
-    changeAvatar(currentUser, res[0]);
-    setLoading(false);
+    if (typeof files[0] === 'string') {
+      await changeAvatar(currentUser, files[0]);
+      setLoading(false);
+    } else {
+      const res = await uploadFiles(`images/${currentUser.uid}`, files as File[]);
+      await changeAvatar(currentUser, res[0]);
+      setLoading(false);
+    }
   };
 
   return (

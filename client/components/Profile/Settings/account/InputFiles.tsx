@@ -8,8 +8,8 @@ import Modal from '../../../Modal';
 
 interface IProps {
   multiple?: boolean;
-  files: File[];
-  setFiles: (files: File[]) => void;
+  files: (File | string)[];
+  setFiles: (files: (File | string)[]) => void;
 }
 
 const InputFiles: React.FC<IProps> = ({ multiple, files, setFiles }) => {
@@ -72,7 +72,15 @@ const InputFiles: React.FC<IProps> = ({ multiple, files, setFiles }) => {
 
   return (
     <div className="w-full my-3">
-      {modalOpen && <Modal modalOpen={modalOpen} type="dropIn" handleClose={close} />}
+      {modalOpen && (
+        <Modal
+          modalOpen={modalOpen}
+          multiple={multiple}
+          setFiles={setFiles}
+          type="dropIn"
+          handleClose={close}
+        />
+      )}
       <div
         onDrop={drop}
         onDragOver={allowDrag}
