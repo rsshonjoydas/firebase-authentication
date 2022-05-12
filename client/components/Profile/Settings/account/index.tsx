@@ -1,4 +1,5 @@
 import Avatar from './Avatar';
+import DisplayName from './DisplayName';
 
 const Account = () => (
   <>
@@ -21,6 +22,7 @@ const Account = () => (
                   {/* Avatar */}
                   <Avatar />
                   {/* Display Name */}
+                  <DisplayName />
                   {/* Email */}
                 </div>
               </div>

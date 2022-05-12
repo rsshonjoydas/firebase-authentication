@@ -13,3 +13,13 @@ export const changeAvatar = async (user: IAuth, url: string) => {
   }
   return true;
 };
+
+export const changeDisplayName = async (user: IAuth, name: string) => {
+  try {
+    await updateProfile(user, { displayName: name });
+    await updateCurrentUser(auth, user);
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+  return true;
+};
