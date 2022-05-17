@@ -8,6 +8,7 @@ import {
   reauthenticateWithPopup,
   updateCurrentUser,
   updateEmail,
+  updatePassword,
   updateProfile,
 } from 'firebase/auth';
 import { toast } from 'react-toastify';
@@ -65,6 +66,18 @@ export const changeEmail = async (user: IAuth, newEmail: string, password: strin
     await updateEmail(user, newEmail);
     await updateCurrentUser(auth, user);
 
+    return toast.success('Updated New Password.');
+  } catch (err: any) {
+    return toast.error(err.message);
+  }
+};
+
+export const changePassword = async (user: IAuth, oldPassword: string, newPassword: string) => {
+  try {
+    const res = await reAuth(user, oldPassword);
+    if (res) return toast.error(res);
+
+    await updatePassword(user, newPassword);
     return toast.success('Updated New Password.');
   } catch (err: any) {
     return toast.error(err.message);
