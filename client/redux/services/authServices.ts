@@ -15,6 +15,7 @@ import {
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase';
 import { ILogin, IRegister } from '../../interface/authTypes';
+import firebaseError from '../../utils/firebaseError';
 
 export const register = async (user: IRegister) => {
   try {
@@ -27,17 +28,8 @@ export const register = async (user: IRegister) => {
     });
 
     return res.user;
-  } catch (error: any) {
-    // if (error.code === 'auth/email-already-in-use') {
-    //   toast.error('Email Already in Use');
-    // }
-    // if (error.code === 'auth/invalid-email') {
-    //   toast.error('invalid email address');
-    // }
-    // if (error.code === 'auth/weak-password') {
-    //   toast.error('Password should be at least 6 character');
-    // }
-    return toast.error(error.message);
+  } catch (err: any) {
+    return firebaseError(err);
   }
 };
 
@@ -55,7 +47,7 @@ export const login = async (user: ILogin) => {
 
     return res.user;
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
 };
 
@@ -64,7 +56,7 @@ export const google = async () => {
     const res = await signInWithPopup(auth, new GoogleAuthProvider());
     return res.user;
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
 };
 
@@ -73,7 +65,7 @@ export const facebook = async () => {
     const res = await signInWithPopup(auth, new FacebookAuthProvider());
     return res.user;
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
 };
 
@@ -82,10 +74,7 @@ export const forgotPassword = async (email: string) => {
     await sendPasswordResetEmail(auth, email);
     return toast.success('Success! Check your email.');
   } catch (err: any) {
-    if (err.code === 'auth/user-not-found') {
-      return toast.error('E-mail not found!');
-    }
-    return true;
+    return firebaseError(err);
   }
 };
 
@@ -93,7 +82,7 @@ export const logOut = async () => {
   try {
     await signOut(auth);
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
   return true;
 };

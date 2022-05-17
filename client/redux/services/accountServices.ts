@@ -14,13 +14,14 @@ import {
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase';
 import { IAuth } from '../../interface/authTypes';
+import firebaseError from '../../utils/firebaseError';
 
 export const changeAvatar = async (user: IAuth, url: string) => {
   try {
     await updateProfile(user, { photoURL: url });
     await updateCurrentUser(auth, user);
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
   return true;
 };
@@ -30,7 +31,7 @@ export const changeDisplayName = async (user: IAuth, name: string) => {
     await updateProfile(user, { displayName: name });
     await updateCurrentUser(auth, user);
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
   return true;
 };
@@ -66,9 +67,9 @@ export const changeEmail = async (user: IAuth, newEmail: string, password: strin
     await updateEmail(user, newEmail);
     await updateCurrentUser(auth, user);
 
-    return toast.success('Updated New Password.');
+    return toast.success('Updated New Email.');
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
 };
 
@@ -78,8 +79,9 @@ export const changePassword = async (user: IAuth, oldPassword: string, newPasswo
     if (res) return toast.error(res);
 
     await updatePassword(user, newPassword);
+
     return toast.success('Updated New Password.');
   } catch (err: any) {
-    return toast.error(err.message);
+    return firebaseError(err);
   }
 };

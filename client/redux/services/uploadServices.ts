@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import { getDownloadURL, listAll, ref, uploadBytesResumable } from 'firebase/storage';
-import { toast } from 'react-toastify';
 import { storage } from '../../firebase';
+import firebaseError from '../../utils/firebaseError';
 
 export const uploadFiles = async (folder: string, files: File[]) => {
   const promises: any[] = [];
@@ -62,5 +62,5 @@ export const getFiles = async (folder: string, callback: (urls: string[]) => voi
         callback(urls);
       });
     })
-    .catch((err) => toast.error(err.message));
+    .catch((err) => firebaseError(err));
 };
