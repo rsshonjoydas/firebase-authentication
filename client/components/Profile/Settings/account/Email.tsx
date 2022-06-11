@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../../../redux/hooks';
 import { changeEmail } from '../../../../redux/services/accountServices';
+import ButtonPrimary from '../../../Button/ButtonPrimary';
 
 const Email = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +40,7 @@ const Email = () => {
         name="email"
         id="email"
         autoComplete="email"
-        className="block w-full p-2 mt-1 bg-gray-100 border-gray-300 rounded-sm shadow-sm outline-none sm:text-sm"
+        className="m-1 mb-3 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-indigo-500 block w-full rounded-md sm:text-sm focus:ring-1 peer ..."
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -56,7 +57,7 @@ const Email = () => {
             name="password"
             id="password"
             autoComplete="password"
-            className="block w-full p-2 mt-1 bg-gray-100 border-gray-300 rounded-sm shadow-sm outline-none sm:text-sm"
+            className="m-1 mb-3 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-indigo-500 block w-full rounded-md sm:text-sm focus:ring-1 peer ..."
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -65,16 +66,9 @@ const Email = () => {
       )}
 
       {/* button */}
-      <div className="text-right">
-        <button
-          type="button"
-          className="px-6 py-1 my-2 text-sm font-semibold text-right border rounded-md hover:bg-gray-50"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'Change'}
-        </button>
-      </div>
+      <ButtonPrimary disabled={loading} onClick={handleSubmit}>
+        {loading ? 'Loading...' : 'Change'}
+      </ButtonPrimary>
     </>
   );
 };

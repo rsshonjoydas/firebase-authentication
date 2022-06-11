@@ -1,33 +1,40 @@
-import { FormEvent, useState } from 'react';
-import { toast } from 'react-toastify';
+import { ErrorMessage, Form, Formik } from 'formik';
+import { useState } from 'react';
+import * as Yup from 'yup';
 import { useAppSelector } from '../../../redux/hooks';
 import { changePassword } from '../../../redux/services/accountServices';
+import ButtonPrimary from '../../Button/ButtonPrimary';
+import PasswordInput from '../../Form/PasswordInput';
+import TextError from '../../Form/TextError';
+
+// TODO: Formik Auth initial value
+const InitialValues = {
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+};
+
+// TODO: Formik Register validation schema
+const Schema = Yup.object().shape({
+  oldPassword: Yup.string()
+    .required('The old password is required.')
+    .min(8, 'The password is too short.'),
+  newPassword: Yup.string()
+    .required('The new password is required.')
+    .min(8, 'The password is too short.'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('newPassword'), null], `Password doesn't match`)
+    .required('You need to confirm your password.'),
+});
 
 const ChangePassword = () => {
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useAppSelector((state) => state.auth);
 
-  const checkPassword = (password: string, cPassword: string) => {
-    if (password.length < 8) {
-      return 'Password must be at least 8 chars.';
-    }
-    if (password !== cPassword) {
-      return 'Confirm password did not match.';
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async (values: any) => {
+    const { oldPassword, newPassword } = values;
     if (!currentUser || !oldPassword) return;
-
-    const msg = checkPassword(newPassword, confirmPassword);
-    if (msg) toast.error(msg);
 
     setLoading(true);
     await changePassword(currentUser, oldPassword, newPassword);
@@ -51,79 +58,40 @@ const ChangePassword = () => {
           </div>
 
           <div className="mt-5 md:mt-0 md:col-span-2">
-            <form onSubmit={handleSubmit}>
-              <div className="overflow-hidden shadow sm:rounded-md">
-                <div className="px-4 py-5 bg-white sm:p-6">
-                  <div className="grid grid-cols-6 gap-6">
-                    {/* Old Password */}
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="old_password"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Old Password
-                      </label>
-                      <input
-                        type="password"
-                        name="old_password"
-                        id="old_password"
-                        required
-                        className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                      />
-                    </div>
-                    {/* New Password */}
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="new_password"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        New Password
-                      </label>
-                      <input
-                        type="password"
-                        name="new_password"
-                        id="new_password"
-                        required
-                        className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                      />
-                    </div>
-                    {/* Confirm New Password */}
-                    <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="cf_password"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Confirm New Password
-                      </label>
-                      <input
-                        type="password"
-                        name="cf_password"
-                        id="cf_password"
-                        required
-                        className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
+            <Formik initialValues={InitialValues} validationSchema={Schema} onSubmit={handleSubmit}>
+              {({ values, handleChange }) => (
+                <Form>
+                  <PasswordInput
+                    label="Old Password"
+                    placeholder="Old Password"
+                    name="oldPassword"
+                    values={values.oldPassword}
+                    onChange={handleChange}
+                  />
+                  <ErrorMessage name="oldPassword" component={TextError} />
+                  <PasswordInput
+                    label="New Password"
+                    placeholder="New Password"
+                    name="newPassword"
+                    values={values.newPassword}
+                    onChange={handleChange}
+                  />
+                  <ErrorMessage name="newPassword" component={TextError} />
+                  <PasswordInput
+                    label="Confirm Password"
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    values={values.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  <ErrorMessage name="confirmPassword" component={TextError} />
 
-                <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    disabled={loading}
-                    // onClick={handleSubmit}
-                  >
+                  <ButtonPrimary disabled={loading} onClick={handleSubmit}>
                     {loading ? 'Loading...' : 'Change'}
-                  </button>
-                </div>
-              </div>
-            </form>
+                  </ButtonPrimary>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>

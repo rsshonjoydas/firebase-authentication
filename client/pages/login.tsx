@@ -1,5 +1,3 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ErrorMessage, Form, Formik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,6 +6,7 @@ import * as Yup from 'yup';
 import LoginSocial from '../components/auth/LoginSocial';
 import Button from '../components/Button/Button';
 import FormikControl from '../components/Form/FormikControl';
+import PasswordInput from '../components/Form/PasswordInput';
 import TextError from '../components/Form/TextError';
 import { ILogin } from '../interface/authTypes';
 import { useAppDispatch } from '../redux/hooks';
@@ -26,7 +25,6 @@ const Schema = Yup.object().shape({
 });
 
 const Login = () => {
-  const [passwordShow, setPasswordShow] = useState(false);
   const [remember, setRemember] = useState(false);
 
   const router = useRouter();
@@ -36,10 +34,6 @@ const Login = () => {
     const { email, password } = values;
 
     dispatch(authLogin({ email, password, remember, router }));
-  };
-
-  const togglePassword = () => {
-    setPasswordShow(!passwordShow);
   };
 
   return (
@@ -66,34 +60,13 @@ const Login = () => {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email" component={TextError} />
-                <label
-                  htmlFor="password"
-                  className="block mt-3 after:content-['*'] after:ml-0.5 after:text-red-500"
-                >
-                  Password
-                </label>
-                <div className="flex items-center">
-                  <FormikControl
-                    control="input"
-                    placeholder="Password"
-                    name="password"
-                    type={passwordShow ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange}
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePassword}
-                    className="w-6 text-gray-400 pb-1 -m-10"
-                  >
-                    {passwordShow ? (
-                      <FontAwesomeIcon icon={faEye} />
-                    ) : (
-                      <FontAwesomeIcon icon={faEyeSlash} />
-                    )}
-                  </button>
-                </div>
+                <PasswordInput
+                  label="Password"
+                  name="password"
+                  placeholder="Password"
+                  values={values.password}
+                  onChange={handleChange}
+                />
                 <ErrorMessage name="password" component={TextError} />
                 <div className="flex items-center mt-2">
                   <input

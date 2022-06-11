@@ -1,8 +1,7 @@
-import { ErrorMessage, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Button from '../components/Button/Button';
 import FormikControl from '../components/Form/FormikControl';
-import TextError from '../components/Form/TextError';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { authForgotPassword } from '../redux/slice/authSlice';
 
@@ -49,7 +48,6 @@ const ForgotPassword = () => {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email" component={TextError} />
                 <div className="flex justify-between items-center">
                   <Button onClick={handleSubmit}>{loading ? 'Loading...' : 'Send'}</Button>
                 </div>

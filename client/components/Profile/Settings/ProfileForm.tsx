@@ -1,36 +1,52 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { ChangeInput } from '../../../interface/authTypes';
+import { Form, Formik } from 'formik';
+import { useState } from 'react';
+import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { profileUpdate } from '../../../redux/slice/profileSlice';
+import ButtonPrimary from '../../Button/ButtonPrimary';
+import FormikControl from '../../Form/FormikControl';
+
+// TODO: Formik Auth initial value
+const InitialValues = {
+  fullName: '',
+  contactEmail: '',
+  phone: '',
+  website: '',
+  address: '',
+  about: '',
+};
+
+// TODO: Formik Register validation schema
+const Schema = Yup.object().shape({
+  fullName: Yup.string()
+    .required('Your first name is required.')
+    .min(3, 'Too short.')
+    .max(25, 'Too long.'),
+  contactEmail: Yup.string().email('Invalid email.').required('The email is required.'),
+  address: Yup.string().nullable().required('Address is required'),
+  phone: Yup.number()
+    .typeError("That doesn't look like a phone number")
+    .positive("A phone number can't start with a minus")
+    .integer("A phone number can't include a decimal point")
+    .min(1000000000, 'Too short')
+    .max(9999999999, 'Too long')
+    .required('A phone number is required'),
+  website: Yup.string().url().required('A website is required'),
+  about: Yup.string()
+    .required('The about is required')
+    .min(5, 'too small!')
+    .max(500, 'Too Long String'),
+});
 
 const ProfileForm = () => {
-  const init = {
-    fullName: '',
-    emailContact: '',
-    phone: '',
-    website: '',
-    address: '',
-    about: '',
-  };
-
-  const [data, setData] = useState(init);
   const [loading, setLoading] = useState(false);
 
   const { currentUser } = useAppSelector((state) => state.auth);
   const { profile } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (profile) setData(profile);
-  }, [profile]);
-
-  const handleInput = (e: ChangeInput) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (values: any) => {
+    const { ...data } = values;
     if (!currentUser) return;
     setLoading(true);
     await dispatch(profileUpdate({ user: currentUser, data }));
@@ -39,138 +55,113 @@ const ProfileForm = () => {
 
   return (
     <div>
-      <div>
-        <div className="md:grid md:grid-cols-3 md:gap-6">
-          <div className="md:col-span-1">
-            <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
-              <p className="mt-1 text-sm text-gray-600">
-                This information will be displayed publicly so be careful what you share.
-              </p>
-            </div>
+      <div className="md:grid md:grid-cols-3 md:gap-6">
+        <div className="md:col-span-1">
+          <div className="px-4 sm:px-0">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">Profile</h3>
+            <p className="mt-1 text-sm text-gray-600">
+              This information will be displayed publicly so be careful what you share.
+            </p>
           </div>
+        </div>
 
-          {/* Form */}
-          <div className="mt-5 md:mt-0 md:col-span-2">
-            <form onSubmit={handleSubmit}>
-              <div className="shadow sm:rounded-md sm:overflow-hidden">
-                <div className="px-4 py-5 space-y-6 bg-white sm:p-6">
-                  {/* Full Name */}
-                  <div>
-                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                      Full Name
-                    </label>
-                    <div className="flex mt-1 rounded-md shadow-sm">
-                      <input
-                        type="text"
-                        name="fullName"
-                        id="fullName"
-                        className="flex-1 block w-full text-blue-600 border-gray-300 rounded-none focus:ring-indigo-500 rounded-r-md sm:text-sm"
-                        value={data.fullName}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                  {/* Email Contact */}
-                  <div>
-                    <label
-                      htmlFor="emailContact"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email Contact
-                    </label>
-                    <div className="flex mt-1 rounded-md shadow-sm">
-                      <input
-                        type="email"
-                        name="emailContact"
-                        id="emailContact"
-                        className="flex-1 block w-full text-blue-600 border-gray-300 rounded-none focus:ring-indigo-500 rounded-r-md sm:text-sm"
-                        value={data.emailContact}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                  {/* Address */}
-                  <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                      Address
-                    </label>
-                    <div className="flex mt-1 rounded-md shadow-sm">
-                      <input
-                        type="text"
-                        name="address"
-                        id="address"
-                        className="flex-1 block w-full text-blue-600 border-gray-300 rounded-none focus:ring-indigo-500 rounded-r-md sm:text-sm"
-                        value={data.address}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                  {/* Phone number */}
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                      Phone Number
-                    </label>
-                    <div className="flex mt-1 rounded-md shadow-sm">
-                      <input
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        className="flex-1 block w-full text-blue-600 border-gray-300 rounded-none focus:ring-indigo-500 rounded-r-md sm:text-sm"
-                        value={data.phone}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                  {/* website */}
-                  <div>
-                    <label htmlFor="website" className="block text-sm font-medium text-gray-700">
-                      Website
-                    </label>
-                    <div className="flex mt-1 rounded-md shadow-sm">
-                      <input
-                        type="text"
-                        name="website"
-                        id="website"
-                        className="flex-1 block w-full text-blue-600 border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md sm:text-sm"
-                        placeholder="www.example.com"
-                        value={data.website}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                  {/* About */}
-                  <div>
-                    <label htmlFor="about" className="block text-sm font-medium text-gray-700">
-                      About
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        id="about"
-                        name="about"
-                        rows={5}
-                        className="block w-full mt-1 text-blue-600 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        placeholder="Brief description for your profile."
-                        value={data.about}
-                        onChange={handleInput}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Button */}
-                <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    disabled={loading}
+        <div className="mt-5 mx-6 md:mt-0 md:col-span-2">
+          <Formik initialValues={InitialValues} validationSchema={Schema} onSubmit={handleSubmit}>
+            {({ values, handleChange }) => (
+              <Form>
+                <div className="col-span-6 sm:w-full">
+                  <label
+                    htmlFor="name"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
                   >
-                    {loading ? 'Loading...' : 'Save'}
-                  </button>
+                    Full Name
+                  </label>
+                  <FormikControl
+                    control="input"
+                    placeholder={profile?.fullName}
+                    type="text"
+                    name="fullName"
+                    value={values.fullName}
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="fullName"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
+                    Contract Email
+                  </label>
+                  <FormikControl
+                    control="input"
+                    placeholder={profile?.contactEmail}
+                    type="email"
+                    name="contactEmail"
+                    value={values.contactEmail}
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="name"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
+                    Address
+                  </label>
+                  <FormikControl
+                    control="input"
+                    placeholder={profile?.address}
+                    type="text"
+                    name="address"
+                    value={values.address}
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="name"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
+                    Phone
+                  </label>
+                  <FormikControl
+                    control="input"
+                    placeholder={profile?.phone}
+                    type="text"
+                    name="phone"
+                    value={values.phone}
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="name"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
+                    Website
+                  </label>
+                  <FormikControl
+                    control="input"
+                    placeholder={profile?.website}
+                    type="text"
+                    name="website"
+                    value={values.website}
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="name"
+                    className="block after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
+                    About
+                  </label>
+                  <FormikControl
+                    control="textarea"
+                    placeholder={profile?.about}
+                    type="text"
+                    name="about"
+                    value={values.about}
+                    onChange={handleChange}
+                  />
+
+                  <ButtonPrimary disabled={loading}>
+                    {loading ? 'Loading...' : 'Change'}
+                  </ButtonPrimary>
                 </div>
-              </div>
-            </form>
-          </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
 

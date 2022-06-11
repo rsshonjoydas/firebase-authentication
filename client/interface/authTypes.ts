@@ -29,7 +29,7 @@ export interface AuthState {
 
 export interface IProfile {
   fullName: string;
-  emailContact: string;
+  contactEmail: string;
   phone: string;
   website: string;
   address: string;

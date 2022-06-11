@@ -5,7 +5,7 @@ import Header from '../Header';
 const Layout = ({ children }: React.PropsWithChildren<{}>) => (
   <>
     <Header />
-    {children}
+    <main>{children}</main>
     <Footer />
   </>
 );

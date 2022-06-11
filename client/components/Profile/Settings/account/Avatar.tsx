@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAppSelector } from '../../../../redux/hooks';
 import { changeAvatar } from '../../../../redux/services/accountServices';
 import { uploadFiles } from '../../../../redux/services/uploadServices';
+import ButtonPrimary from '../../../Button/ButtonPrimary';
 import InputFiles from './InputFiles';
 
 const Avatar = () => {
@@ -28,7 +29,7 @@ const Avatar = () => {
     <>
       <label className="block text-sm font-medium text-gray-700">Avatar</label>
       <div className="flex items-center mt-1">
-        <span className="inline-block w-12 h-12 overflow-hidden bg-gray-100 rounded-full">
+        <span className="inline-block w-12 h-12 mr-4 overflow-hidden bg-gray-100 rounded-full">
           {currentUser?.photoURL ? (
             <Image
               height={44}
@@ -43,14 +44,9 @@ const Avatar = () => {
             </svg>
           )}
         </span>
-        <button
-          type="button"
-          className="px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          disabled={loading}
-          onClick={handleChangeAvatar}
-        >
+        <ButtonPrimary disabled={loading} onClick={handleChangeAvatar}>
           {loading ? 'Loading...' : 'Change'}
-        </button>
+        </ButtonPrimary>
       </div>
 
       <InputFiles files={files} setFiles={setFiles} />

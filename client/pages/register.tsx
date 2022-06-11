@@ -1,12 +1,10 @@
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ErrorMessage, Form, Formik } from 'formik';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import Button from '../components/Button/Button';
 import FormikControl from '../components/Form/FormikControl';
+import PasswordInput from '../components/Form/PasswordInput';
 import TextError from '../components/Form/TextError';
 import { IRegister } from '../interface/authTypes';
 import { authRegister } from '../redux/slice/authSlice';
@@ -33,18 +31,12 @@ const Schema = Yup.object().shape({
 });
 
 const Register = () => {
-  const [passwordShow, setPasswordShow] = useState(false);
-
   const dispatch = useDispatch();
 
   const handleSubmit = async (values: IRegister) => {
     const { name, email, password } = values;
 
     dispatch(authRegister({ name, email, password }));
-  };
-
-  const togglePassword = () => {
-    setPasswordShow(!passwordShow);
   };
 
   return (
@@ -72,7 +64,6 @@ const Register = () => {
                       value={values.name}
                       onChange={handleChange}
                     />
-                    <ErrorMessage name="name" component={TextError} />
                   </div>
                 </div>
                 {/* // ? email & Password Field */}
@@ -90,47 +81,19 @@ const Register = () => {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <ErrorMessage name="email" component={TextError} />
-                <label
-                  htmlFor="password"
-                  className="block mt-3 after:content-['*'] after:ml-0.5 after:text-red-500"
-                >
-                  Password
-                </label>
-                <div className="flex items-center">
-                  <FormikControl
-                    control="input"
-                    placeholder="Password"
-                    name="password"
-                    type={passwordShow ? 'text' : 'password'}
-                    value={values.password}
-                    onChange={handleChange}
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePassword}
-                    className="w-6 text-gray-400 pb-1 -m-10"
-                  >
-                    {passwordShow ? (
-                      <FontAwesomeIcon icon={faEye} />
-                    ) : (
-                      <FontAwesomeIcon icon={faEyeSlash} />
-                    )}
-                  </button>
-                </div>
+                <PasswordInput
+                  label="New Password"
+                  placeholder="New Password"
+                  name="password"
+                  values={values.password}
+                  onChange={handleChange}
+                />
                 <ErrorMessage name="password" component={TextError} />
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mt-3 after:content-['*'] after:ml-0.5 after:text-red-500"
-                >
-                  Confirm Password
-                </label>
-                <FormikControl
-                  control="input"
-                  type="password"
+                <PasswordInput
+                  label="Confirm Password"
                   placeholder="Confirm Password"
                   name="confirmPassword"
-                  value={values.confirmPassword}
+                  values={values.confirmPassword}
                   onChange={handleChange}
                 />
                 <ErrorMessage name="confirmPassword" component={TextError} />
