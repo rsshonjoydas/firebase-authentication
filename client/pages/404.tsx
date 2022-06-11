@@ -1,3 +1,4 @@
+import { NextPage } from 'next';
 import Link from 'next/link';
 import Header from '../components/Header';
 
@@ -29,7 +30,7 @@ const NotFound = () => (
 
 export default NotFound;
 
-NotFound.getLayout = function PageLayout(page: any) {
+NotFound.getLayout = function PageLayout(page: NextPage) {
   return (
     <>
       <Header />
