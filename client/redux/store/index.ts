@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
+import reduxLogger from 'redux-logger';
 import authReducer from '../slice/authSlice';
 import profileReducer from '../slice/profileSlice';
 
@@ -11,7 +12,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(reduxLogger),
 });
 
 export type AppDispatch = typeof store.dispatch;
