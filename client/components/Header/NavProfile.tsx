@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { authLogout } from '../../redux/slice/authSlice';
 
 const NavProfile = () => {
-  const { currentUser } = useAppSelector((state: { auth: any }) => state.auth);
+  const { currentUser } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   return (
@@ -26,7 +26,7 @@ const NavProfile = () => {
               <FontAwesomeIcon icon={faUser} className="w-full h-full" />
             )}
           </div>
-          <span className="mr-4 font-semibold capitalize">{currentUser?.displayName}</span>
+          <span className="mr-4 ml-2 font-semibold capitalize">{currentUser?.displayName}</span>
         </span>
       </Link>
       <button

@@ -10,7 +10,7 @@ const Search = () => (
 );
 
 const UserCircle = () => {
-  const { currentUser } = useAppSelector((state: { auth: any }) => state.auth);
+  const { currentUser } = useAppSelector((state) => state.auth);
 
   return (
     <div>
@@ -25,7 +25,8 @@ const UserCircle = () => {
 
 const BellIcon = () => <FaRegBell size="24" className="top-navigation-icon" />;
 const Title = () => {
-  const { currentUser } = useAppSelector((state: { auth: any }) => state.auth);
+  const { currentUser } = useAppSelector((state) => state.auth);
+
   return (
     <div>
       {currentUser?.displayName ? (

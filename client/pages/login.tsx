@@ -93,7 +93,7 @@ const Login = () => {
                 <LoginSocial />
                 {/* // ? Toggle Login & Sign Up button */}
                 <div className="flex justify-center items-center">
-                  <Link href="/register">Dont have an account? Sign Up</Link>
+                  <Link href="/register">Don&prime;t have an account? Sign Up</Link>
                 </div>
               </div>
             </Form>
