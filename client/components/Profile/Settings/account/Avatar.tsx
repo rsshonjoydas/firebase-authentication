@@ -44,9 +44,7 @@ const Avatar = () => {
             </svg>
           )}
         </span>
-        <ButtonPrimary disabled={loading} onClick={handleChangeAvatar}>
-          {loading ? 'Loading...' : 'Change'}
-        </ButtonPrimary>
+        <ButtonPrimary disabled={loading} onClick={handleChangeAvatar} loading={loading} />
       </div>
 
       <InputFiles files={files} setFiles={setFiles} />

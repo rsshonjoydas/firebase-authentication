@@ -155,9 +155,7 @@ const ProfileForm = () => {
                     onChange={handleChange}
                   />
 
-                  <ButtonPrimary disabled={loading}>
-                    {loading ? 'Loading...' : 'Change'}
-                  </ButtonPrimary>
+                  <ButtonPrimary disabled={loading} onClick={handleSubmit} loading={loading} />
                 </div>
               </Form>
             )}

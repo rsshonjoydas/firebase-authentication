@@ -51,9 +51,7 @@ const DisplayName = () => {
               value={values.name}
               onChange={handleChange}
             />
-            <ButtonPrimary disabled={loading} onClick={handleSubmit}>
-              {loading ? 'Loading...' : 'Change'}
-            </ButtonPrimary>
+            <ButtonPrimary disabled={loading} onClick={handleSubmit} loading={loading} />
           </div>
         </Form>
       )}

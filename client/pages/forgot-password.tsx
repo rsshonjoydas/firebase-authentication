@@ -49,7 +49,9 @@ const ForgotPassword = () => {
                   onChange={handleChange}
                 />
                 <div className="flex justify-between items-center">
-                  <Button onClick={handleSubmit}>{loading ? 'Loading...' : 'Send'}</Button>
+                  <Button disabled={loading} loading={loading}>
+                    Send
+                  </Button>
                 </div>
               </div>
             </Form>

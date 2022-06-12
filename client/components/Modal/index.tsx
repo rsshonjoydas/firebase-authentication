@@ -78,7 +78,7 @@ const ModalText: React.FC<IProps> = ({ multiple, files, setFiles, handleClose })
     <div className="flex items-end justify-center h-full w-full px-4 pt-4 pb-20 text-center sm:block sm:p-0">
       <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
         <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-          <div className="sm:flex sm:items-start">
+          <div className="sm:flex overflow-y-auto h-80 sm:items-start">
             <div className="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <div className="min-h-[300px] mt-2 border-2 border-dotted">
                 <div className="grid grid-cols-5 gap-2 p-2" aria-multiselectable>
@@ -115,7 +115,7 @@ const ModalText: React.FC<IProps> = ({ multiple, files, setFiles, handleClose })
 
 const ModalButton = ({ onClick, label }: any) => (
   <motion.button
-    className="modal-button"
+    className="modal-button pt-6"
     type="button"
     whileHover={{ scale: 1.1 }}
     whileTap={{ scale: 0.95 }}

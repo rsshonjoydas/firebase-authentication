@@ -1,5 +1,6 @@
 import { ErrorMessage, Form, Formik } from 'formik';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import Button from '../components/Button/Button';
@@ -31,12 +32,15 @@ const Schema = Yup.object().shape({
 });
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (values: IRegister) => {
     const { name, email, password } = values;
 
-    dispatch(authRegister({ name, email, password }));
+    setLoading(true);
+    await dispatch(authRegister({ name, email, password }));
+    setLoading(false);
   };
 
   return (
@@ -99,7 +103,9 @@ const Register = () => {
                 <ErrorMessage name="confirmPassword" component={TextError} />
                 {/* // ? Submit button & Forget password Field */}
                 <div className="flex justify-between items-center">
-                  <Button type="submit">Register</Button>
+                  <Button type="submit" disabled={loading} loading={loading}>
+                    Register
+                  </Button>
                   <a href="/" className="text-sm hover:underline ml-8">
                     Forgot password?
                   </a>

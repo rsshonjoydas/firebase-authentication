@@ -86,9 +86,7 @@ const ChangePassword = () => {
                   />
                   <ErrorMessage name="confirmPassword" component={TextError} />
 
-                  <ButtonPrimary disabled={loading} onClick={handleSubmit}>
-                    {loading ? 'Loading...' : 'Change'}
-                  </ButtonPrimary>
+                  <ButtonPrimary disabled={loading} onClick={handleSubmit} loading={loading} />
                 </Form>
               )}
             </Formik>

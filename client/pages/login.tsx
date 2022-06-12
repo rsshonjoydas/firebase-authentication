@@ -26,6 +26,7 @@ const Schema = Yup.object().shape({
 
 const Login = () => {
   const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -33,7 +34,9 @@ const Login = () => {
   const handleSubmit = async (values: ILogin) => {
     const { email, password } = values;
 
-    dispatch(authLogin({ email, password, remember, router }));
+    setLoading(true);
+    await dispatch(authLogin({ email, password, remember, router }));
+    setLoading(false);
   };
 
   return (
@@ -85,7 +88,9 @@ const Login = () => {
                 </div>
                 {/* // ? Submit button & Forget password Field */}
                 <div className="flex justify-between items-center">
-                  <Button type="submit">Login</Button>
+                  <Button disabled={loading} loading={loading}>
+                    Login
+                  </Button>
                   <a href="/forgot-password" className="text-sm hover:underline ml-8">
                     Forgot password?
                   </a>
