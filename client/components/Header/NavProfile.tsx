@@ -15,14 +15,14 @@ const NavProfile = () => {
     <div className="flex items-center cursor-pointer">
       <Link href="/profile" replace>
         <span className="flex items-center">
-          <div className="w-10 h-10 overflow-hidden rounded-full">
+          <div className="w-12 h-12 overflow-hidden rounded-full ring-4 ring-purple-100 p-1 sm:mx-0 sm:flex-shrink-0 transform hover:scale-105 duration-500">
             {currentUser?.photoURL ? (
               <Image
-                height={44}
-                width={44}
+                height={60}
+                width={60}
                 src={currentUser.photoURL}
                 alt="avatar"
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full rounded-full"
               />
             ) : (
               <FontAwesomeIcon icon={faUser} className="w-full h-full" />
