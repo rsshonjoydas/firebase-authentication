@@ -78,9 +78,10 @@ export const forgotPassword = async (email: string) => {
   }
 };
 
-export const logOut = async () => {
+export const logOut = async (router: any) => {
   try {
     await signOut(auth);
+    router.push('/login');
   } catch (err: any) {
     return firebaseError(err);
   }

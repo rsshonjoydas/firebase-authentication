@@ -27,7 +27,10 @@ export const authForgotPassword = createAsyncThunk(
   async (email: string) => await forgotPassword(email)
 );
 
-export const authLogout = createAsyncThunk('auth/logout', async () => await logOut());
+export const authLogout = createAsyncThunk(
+  'auth/logout',
+  async (router: any) => await logOut(router)
+);
 
 const initialState: AuthState = {
   currentUser: undefined,
